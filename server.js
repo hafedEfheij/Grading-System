@@ -9,6 +9,27 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Initialize database on startup for Railway
+const initializeDatabase = () => {
+    console.log('Initializing database for production...');
+
+    // Check if database exists and has tables
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='users'", (err, row) => {
+        if (err) {
+            console.error('Database check error:', err);
+            return;
+        }
+
+        if (!row) {
+            console.log('Database tables not found, initializing...');
+            // Run initialization script
+            require('./scripts/init-db.js');
+        } else {
+            console.log('Database already initialized');
+        }
+    });
+};
+
 // Database connection
 const db = new sqlite3.Database('./database.sqlite');
 
@@ -734,9 +755,18 @@ app.get('/api/polls/:id/results', requireAdmin, (req, res) => {
     });
 });
 
+// Initialize database for production
+if (process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT) {
+    initializeDatabase();
+}
+
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
+
+    if (process.env.RAILWAY_ENVIRONMENT) {
+        console.log('Running on Railway.app');
+    }
 });
 
 module.exports = app;
