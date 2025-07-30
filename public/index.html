@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة الطلاب والدرجات</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-background">
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="login-header">
+                        <div class="logo-container">
+                            <div class="logo-circle">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                        </div>
+                        <h1>كلية التقنية الإلكترونية</h1>
+                        <h2>نظام إدارة المواد والدرجات</h2>
+                    </div>
+
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group">
+                            <div class="input-container">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" id="username" name="username" placeholder="اسم المستخدم" required>
+                                <label for="username">اسم المستخدم</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-container">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="password" name="password" placeholder="كلمة المرور" required>
+                                <label for="password">كلمة المرور</label>
+                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="login-btn">
+                            <span class="btn-text">تسجيل الدخول</span>
+                            <i class="fas fa-arrow-left btn-icon"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="page">
+        <nav class="admin-navbar">
+            <div class="admin-nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-user-shield"></i>
+                    <span class="brand-text">لوحة المشرف</span>
+                </div>
+
+                <button class="mobile-menu-toggle" id="adminMobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="nav-menu" id="adminNavMenu">
+                    <button class="nav-btn active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>لوحة التحكم</span>
+                    </button>
+                    <button class="nav-btn" data-section="students">
+                        <i class="fas fa-users"></i>
+                        <span>إدارة الطلاب</span>
+                    </button>
+                    <button class="nav-btn" data-section="subjects">
+                        <i class="fas fa-book"></i>
+                        <span>إدارة المواد</span>
+                    </button>
+                    <button class="nav-btn" data-section="grades">
+                        <i class="fas fa-chart-line"></i>
+                        <span>إدارة الدرجات</span>
+                    </button>
+                    <button class="nav-btn" data-section="polls">
+                        <i class="fas fa-poll"></i>
+                        <span>الاستطلاعات</span>
+                    </button>
+                </div>
+
+                <div class="nav-user">
+                    <div class="user-info">
+                        <i class="fas fa-user-shield"></i>
+                        <span id="adminUsername">المشرف</span>
+                    </div>
+                    <button id="logoutBtn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>خروج</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="admin-main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="admin-content-section">
+                <!-- Welcome Section -->
+                <div class="admin-welcome-section">
+                    <div class="welcome-content">
+                        <div class="welcome-text">
+                            <h1 class="welcome-title">مرحباً بك في لوحة المشرف</h1>
+                            <p class="welcome-subtitle">إدارة شاملة لنظام الطلاب والدرجات</p>
+                        </div>
+                        <div class="welcome-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="admin-stats-grid">
+                    <div class="stat-card students-stat">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalStudentsCount">0</div>
+                            <div class="stat-label">إجمالي الطلاب</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card subjects-stat">
+                        <div class="stat-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalSubjectsCount">0</div>
+                            <div class="stat-label">إجمالي المواد</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card grades-stat">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalGradesCount">0</div>
+                            <div class="stat-label">إجمالي الدرجات</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card polls-stat">
+                        <div class="stat-icon">
+                            <i class="fas fa-poll"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalPollsCount">0</div>
+                            <div class="stat-label">إجمالي الاستطلاعات</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions-section">
+                    <h2><i class="fas fa-bolt"></i> إجراءات سريعة</h2>
+                    <div class="quick-actions-grid">
+                        <button class="quick-action-btn" onclick="showStudentModal()">
+                            <i class="fas fa-user-plus"></i>
+                            <span>إضافة طالب جديد</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="showSubjectModal()">
+                            <i class="fas fa-book-open"></i>
+                            <span>إضافة مادة جديدة</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="showGradeModal()">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>إضافة درجة</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="showPollModal()">
+                            <i class="fas fa-poll-h"></i>
+                            <span>إنشاء استطلاع</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Students Management Section -->
+            <section id="studentsSection" class="admin-content-section">
+                <div class="admin-section-header">
+                    <h2><i class="fas fa-users"></i> إدارة الطلاب</h2>
+                    <div class="section-actions">
+                        <button id="addStudentBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة طالب جديد</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="admin-table-container">
+                    <table id="studentsTable" class="admin-data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم القيد</th>
+                                <th>الاسم</th>
+                                <th class="mobile-hide">الفصل</th>
+                                <th class="mobile-hide">القسم</th>
+                                <th class="mobile-hide">البريد الإلكتروني</th>
+                                <th class="mobile-hide">الهاتف</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Subjects Management Section -->
+            <section id="subjectsSection" class="admin-content-section">
+                <div class="admin-section-header">
+                    <h2><i class="fas fa-book"></i> إدارة المواد</h2>
+                    <div class="section-actions">
+                        <button id="addSubjectBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة مادة جديدة</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="admin-table-container">
+                    <table id="subjectsTable" class="admin-data-table">
+                        <thead>
+                            <tr>
+                                <th>رمز المادة</th>
+                                <th>اسم المادة</th>
+                                <th class="mobile-hide">الساعات المعتمدة</th>
+                                <th class="mobile-hide">القسم</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Grades Management Section -->
+            <section id="gradesSection" class="admin-content-section">
+                <div class="admin-section-header">
+                    <h2><i class="fas fa-chart-line"></i> إدارة الدرجات</h2>
+                    <div class="section-actions">
+                        <button id="addGradeBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة درجة جديدة</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="admin-table-container">
+                    <table id="gradesTable" class="admin-data-table">
+                        <thead>
+                            <tr>
+                                <th>الطالب</th>
+                                <th>المادة</th>
+                                <th class="mobile-hide">نصفي نظري</th>
+                                <th class="mobile-hide">نصفي عملي</th>
+                                <th>مجموع النصفي</th>
+                                <th class="mobile-hide">نهائي نظري</th>
+                                <th class="mobile-hide">نهائي عملي</th>
+                                <th>مجموع النهائي</th>
+                                <th>الدرجة الكلية</th>
+                                <th>التقدير</th>
+                                <th class="mobile-hide">الفصل</th>
+                                <th class="mobile-hide">السنة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Polls Management Section -->
+            <section id="pollsSection" class="admin-content-section">
+                <div class="admin-section-header">
+                    <h2><i class="fas fa-poll"></i> إدارة الاستطلاعات</h2>
+                    <div class="section-actions">
+                        <button id="addPollBtn" class="btn btn-primary" onclick="showPollModal()">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة استطلاع جديد</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="polls-container">
+                    <div id="pollsList" class="polls-list"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="studentDashboard" class="page">
+        <nav class="student-navbar">
+            <div class="student-nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span class="brand-text">لوحة الطالب</span>
+                </div>
+
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="nav-menu" id="studentNavMenu">
+                    <button class="nav-btn active" data-section="grades">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>درجاتي</span>
+                    </button>
+                    <button class="nav-btn" data-section="polls">
+                        <i class="fas fa-poll"></i>
+                        <span>الاستطلاعات</span>
+                    </button>
+                </div>
+
+                <div class="nav-user">
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="studentUsername">الطالب</span>
+                    </div>
+                    <button id="studentLogoutBtn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>خروج</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="student-main-content">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <div class="welcome-content">
+                    <div class="welcome-text">
+                        <h1 class="welcome-title">مرحباً بك، <span id="welcomeStudentName">الطالب</span></h1>
+                        <p class="welcome-subtitle">تابع تقدمك الأكاديمي ودرجاتك من هنا</p>
+                    </div>
+                    <div class="welcome-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Info Cards -->
+            <div class="info-cards-grid">
+                <div class="info-card student-info-card">
+                    <div class="card-header">
+                        <i class="fas fa-id-card"></i>
+                        <h3>معلومات الطالب</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="info-item">
+                            <span class="info-label">الاسم:</span>
+                            <span class="info-value" id="studentName">اسم الطالب</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">رقم القيد:</span>
+                            <span class="info-value" id="studentNumber">ST000</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">الفصل:</span>
+                            <span class="info-value" id="studentClass">الفصل الأول</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">القسم:</span>
+                            <span class="info-value" id="studentDepartment">القسم</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card gpa-card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>الأداء الأكاديمي</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="gpa-display">
+                            <div class="gpa-value" id="studentGPA">0.00</div>
+                            <div class="gpa-label">المعدل التراكمي</div>
+                        </div>
+                        <div class="gpa-status" id="gpaStatus">
+                            <span class="status-text">ممتاز</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card stats-card">
+                    <div class="card-header">
+                        <i class="fas fa-trophy"></i>
+                        <h3>إحصائيات سريعة</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalSubjects">0</span>
+                            <span class="stat-label">المواد المسجلة</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalCredits">0</span>
+                            <span class="stat-label">الساعات المعتمدة</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Grades Section -->
+            <section id="studentGradesSection" class="student-content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-bar"></i> درجاتي التفصيلية</h2>
+                    <div class="section-actions">
+                        <button class="view-toggle-btn active" data-view="cards">
+                            <i class="fas fa-th-large"></i>
+                            <span>بطاقات</span>
+                        </button>
+                        <button class="view-toggle-btn" data-view="table">
+                            <i class="fas fa-table"></i>
+                            <span>جدول</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cards View -->
+                <div id="gradesCardsView" class="grades-view active">
+                    <div id="gradesCardsContainer" class="grades-cards-container">
+                        <!-- Grades cards will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Table View -->
+                <div id="gradesTableView" class="grades-view">
+                    <div class="responsive-table-container">
+                        <table id="studentGradesTable" class="student-grades-table">
+                            <thead>
+                                <tr>
+                                    <th>المادة</th>
+                                    <th class="mobile-hide">رمز المادة</th>
+                                    <th class="mobile-hide">نصفي نظري</th>
+                                    <th class="mobile-hide">نصفي عملي</th>
+                                    <th>مجموع النصفي</th>
+                                    <th class="mobile-hide">نهائي نظري</th>
+                                    <th class="mobile-hide">نهائي عملي</th>
+                                    <th>مجموع النهائي</th>
+                                    <th>الدرجة الكلية</th>
+                                    <th>التقدير</th>
+                                    <th class="mobile-hide">الترتيب</th>
+                                    <th class="mobile-hide">الساعات</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Student Polls Section -->
+            <section id="studentPollsSection" class="student-content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-poll"></i> الاستطلاعات المتاحة</h2>
+                    <div class="polls-count">
+                        <span id="activePollsCount">0</span> استطلاع نشط
+                    </div>
+                </div>
+                <div id="studentPollsList" class="student-polls-container"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals will be added via JavaScript -->
+    <div id="modalContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
