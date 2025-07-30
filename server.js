@@ -756,7 +756,7 @@ app.get('/api/polls/:id/results', requireAdmin, (req, res) => {
 });
 
 // Initialize database for production
-if (process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT) {
+if (process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT || process.env.RENDER) {
     initializeDatabase();
 }
 

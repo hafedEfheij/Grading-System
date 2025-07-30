@@ -7,7 +7,8 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "init-db": "node scripts/init-db.js",
-    "build": "npm run init-db",
+    "build": "npm install && npm run init-db",
+    "postinstall": "npm run init-db",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
